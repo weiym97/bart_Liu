@@ -101,7 +101,7 @@ dataList <- list(
   N         = n_subj,
   T         = t_max,
   Tsubj     = t_subjs,
-  P         = length(r_Accu),#max(pumps) + 1,
+  P         = length(r_accu),#max(pumps) + 1,
   pumps     = pumps,
   explosion = explosion,
   r         = r,
