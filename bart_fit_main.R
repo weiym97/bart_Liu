@@ -95,8 +95,7 @@ r      = c()
 for (j in 1:length(r_accu)-1) {
   r[j] <- r_accu[j+1]-r_accu[j]
 }
-length(r_accu)
-length(r)
+
 
 # Wrap into a list for Stan
 dataList <- list(
