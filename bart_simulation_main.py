@@ -114,8 +114,9 @@ class EWBartOld():
 
 
 def model_simulation_main(model_name,accu_reward, explode_prob, max_pump, params, data_dir,
-                          n_simu_subj=1000, n_fit_per_run=100, trial_per_subj=50):
-    params.to_excel(data_dir + model_name + '_simulation_statistics.xlsx', index=False)
+                          n_simu_subj=1000, n_fit_per_run=100, trial_per_subj=50,group='1'):
+    params.to_excel(data_dir + model_name + '_group_' + group +'_Nsubj_' + str(n_simu_subj) + '_simulation_statistics.xlsx', index=False)
+    params.to_csv(data_dir + model_name + '_group_' + group + '_Nsubj_' + str(n_simu_subj) + '_simulation_statistics.csv', index=False)
     model = EWBartOld(max_pump=max_pump, accu_reward=accu_reward, explode_prob=explode_prob, num_trial=trial_per_subj)
 
     result = []
@@ -136,7 +137,7 @@ def model_simulation_main(model_name,accu_reward, explode_prob, max_pump, params
                                  'explosion': explosion})
         result.append(subjdata)
     result = pd.concat(result)
-    result.to_csv(data_dir + model_name+'_simulation.txt', sep=' ', index=False, doublequote=False)
+    result.to_csv(data_dir + model_name + '_group_' + group +'_Nsubj_' + str(n_simu_subj) + '_simulation.txt', sep=' ', index=False, doublequote=False)
     #for j in range(n_file):
     #    result_save = result.iloc[int(j * n_fit_per_run * trial_per_subj):int((j + 1) * n_fit_per_run * trial_per_subj),:]
     #    result_save.to_csv(data_dir + model_name +'_simulation_'+str(j+1)+'.txt',sep=' ',index=False,doublequote=False)
@@ -147,8 +148,8 @@ if __name__ == '__main__':
     max_pump = 12
 
     # Totally, we simulation n_simu_subj subjects, but we cut them into n_fit_per_run to run parallelly
-    n_simu_subj = 20
-    n_fit_per_run = 20
+    n_simu_subj = 200
+    n_fit_per_run = 200
 
     ###############################################################################################################
     # Simulation for Liu's paper
@@ -164,15 +165,12 @@ if __name__ == '__main__':
     Lambda = np.random.gamma(shape=parameter_group_result.iloc[6,1],scale=1/parameter_group_result.iloc[7,1],size=n_simu_subj)
     tau = np.random.gamma(shape=parameter_group_result.iloc[8,1],scale=1/parameter_group_result.iloc[9,1],size=n_simu_subj)
 
-    psi = np.clip(psi,0.0,0.05)
-    rho = np.clip(rho,0.15,2.0)
-    Lambda = np.clip(Lambda,0,18)
-    tau = np.clip(tau,0,35)
-    '''
-    params = pd.read_excel('fit_real_data/恢复性检验参数.xlsx')
-    params['subjID'] = params['ID']
-    print(params)
-    '''
+    #psi = np.clip(psi,0.0,0.05)
+    psi = np.clip(psi,0.0,1.0)
+    #rho = np.clip(rho,0.15,2.0)
+    rho = np.clip(rho,0.0,2.0)
+    #Lambda = np.clip(Lambda,0,18)
+    #tau = np.clip(tau,0,35)
 
     params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 10001,
                            'psi': psi,
@@ -185,7 +183,63 @@ if __name__ == '__main__':
     data_dir = 'data/simulation/'
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
-    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='1')
+
+    ### Group 2
+    psi = np.random.gamma(shape=parameter_group_result.iloc[0,2],scale=1/parameter_group_result.iloc[1,2],size=n_simu_subj)
+    xi = np.random.gamma(shape=parameter_group_result.iloc[2,2],scale=1/parameter_group_result.iloc[3,2],size=n_simu_subj)
+    rho = np.random.gamma(shape=parameter_group_result.iloc[4,2],scale=1/parameter_group_result.iloc[5,2],size=n_simu_subj)
+    Lambda = np.random.gamma(shape=parameter_group_result.iloc[6,2],scale=1/parameter_group_result.iloc[7,2],size=n_simu_subj)
+    tau = np.random.gamma(shape=parameter_group_result.iloc[8,2],scale=1/parameter_group_result.iloc[9,2],size=n_simu_subj)
+
+    #psi = np.clip(psi,0.0,0.05)
+    psi = np.clip(psi,0.0,1.0)
+    #rho = np.clip(rho,0.15,2.0)
+    rho = np.clip(rho,0.0,2.0)
+    #Lambda = np.clip(Lambda,0,18)
+    #tau = np.clip(tau,0,35)
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 20001,
+                           'psi': psi,
+                           'xi': xi,
+                           'rho': rho,
+                           'lambda':Lambda,
+                           'tau': tau
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='2')
+
+    ### Group 3
+    psi = np.random.gamma(shape=parameter_group_result.iloc[0,3],scale=1/parameter_group_result.iloc[1,3],size=n_simu_subj)
+    xi = np.random.gamma(shape=parameter_group_result.iloc[2,3],scale=1/parameter_group_result.iloc[3,3],size=n_simu_subj)
+    rho = np.random.gamma(shape=parameter_group_result.iloc[4,3],scale=1/parameter_group_result.iloc[5,3],size=n_simu_subj)
+    Lambda = np.random.gamma(shape=parameter_group_result.iloc[6,3],scale=1/parameter_group_result.iloc[7,3],size=n_simu_subj)
+    tau = np.random.gamma(shape=parameter_group_result.iloc[8,3],scale=1/parameter_group_result.iloc[9,3],size=n_simu_subj)
+
+    #psi = np.clip(psi,0.0,0.05)
+    psi = np.clip(psi,0.0,1.0)
+    #rho = np.clip(rho,0.15,2.0)
+    rho = np.clip(rho,0.0,2.0)
+    #Lambda = np.clip(Lambda,0,18)
+    #tau = np.clip(tau,0,35)
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 30001,
+                           'psi': psi,
+                           'xi': xi,
+                           'rho': rho,
+                           'lambda':Lambda,
+                           'tau': tau
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='3')
+
+
 
     '''
     data_dir = 'data/simulation/'
