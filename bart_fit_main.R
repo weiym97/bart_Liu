@@ -56,6 +56,7 @@ return_param <- function(model_name){
                 CANDBart_3=c('psi','xi','gamma','tau','alpha'),
                 STLBart = c('omega_0','vwin','vloss','tau'),
                 STLDBart = c('omega_0','vwin','vloss','alpha','tau'),
+                bart_par5_5.0 = c('psi','xi','rho','lambda','tau')
   )
   return(params)
 }
