@@ -46,8 +46,8 @@ stat_recov <- read.table(paste('fit_result/summary_',model_name,'_',data_name,'.
 
 
 if (outlier=='remove'){
-  class(stat_recov$tau<200)
-  stat_sim < - stat_sim[stat_recov$tau<200,]
+  #class(stat_recov$tau<200)
+  #stat_sim < - stat_sim[stat_recov$tau<200,]
   stat_recov <- stat_recov[stat_recov$tau<200,]
 }
 
