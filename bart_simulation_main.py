@@ -148,8 +148,8 @@ if __name__ == '__main__':
     max_pump = 12
 
     # Totally, we simulation n_simu_subj subjects, but we cut them into n_fit_per_run to run parallelly
-    n_simu_subj = 200
-    n_fit_per_run = 200
+    n_simu_subj = 100
+    n_fit_per_run = 100
 
     ###############################################################################################################
     # Simulation for Liu's paper
@@ -269,14 +269,88 @@ if __name__ == '__main__':
     model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='4')
     '''
 
-
+    '''
     params = pd.read_csv('fit_real_data/Posterior_distribution.csv')
     params['subjID'] = params['ID']
     data_dir = 'data/simulation/'
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
     model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir,len(params), len(params),group='5')
+    '''
 
+    posterior_real_data = pd.read_excel('fit_real_data/恢复性检验参数.xlsx')
+    print(posterior_real_data)
+
+    posterior_real_data_group_6 = posterior_real_data.loc[(posterior_real_data['Group']==1),:]
+    posterior_real_data_group_7 = posterior_real_data.loc[(posterior_real_data['Group']==2),:]
+    posterior_real_data_group_8 = posterior_real_data.loc[(posterior_real_data['Group']==3),:]
+
+    ### Group 6
+    psi = np.mean(posterior_real_data_group_6['psi'])
+    xi = np.mean(posterior_real_data_group_6['xi'])
+    rho = np.mean(posterior_real_data_group_6['rho'])
+    Lambda = np.mean(posterior_real_data_group_6['lambda'])
+    tau = np.mean(posterior_real_data_group_6['tau'])
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 60001,
+                           'psi': np.ones(n_simu_subj) * psi,
+                           'xi': np.ones(n_simu_subj) * xi,
+                           'rho': np.ones(n_simu_subj) * rho,
+                           'lambda':np.ones(n_simu_subj) * Lambda,
+                           'tau': np.ones(n_simu_subj) * tau,
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='6')
+
+    ### Group 7
+
+    psi = np.mean(posterior_real_data_group_7['psi'])
+    xi = np.mean(posterior_real_data_group_7['xi'])
+    rho = np.mean(posterior_real_data_group_7['rho'])
+    Lambda = np.mean(posterior_real_data_group_7['lambda'])
+    tau = np.mean(posterior_real_data_group_7['tau'])
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 70001,
+                           'psi': np.ones(n_simu_subj) * psi,
+                           'xi': np.ones(n_simu_subj) * xi,
+                           'rho': np.ones(n_simu_subj) * rho,
+                           'lambda':np.ones(n_simu_subj) * Lambda,
+                           'tau': np.ones(n_simu_subj) * tau,
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='7')
+
+
+    ### Group 8
+    psi = np.mean(posterior_real_data_group_8['psi'])
+    xi = np.mean(posterior_real_data_group_8['xi'])
+    rho = np.mean(posterior_real_data_group_8['rho'])
+    Lambda = np.mean(posterior_real_data_group_8['lambda'])
+    tau = np.mean(posterior_real_data_group_8['tau'])
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 80001,
+                           'psi': np.ones(n_simu_subj) * psi,
+                           'xi': np.ones(n_simu_subj) * xi,
+                           'rho': np.ones(n_simu_subj) * rho,
+                           'lambda':np.ones(n_simu_subj) * Lambda,
+                           'tau': np.ones(n_simu_subj) * tau,
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='8')
+
+
+
+
+    #print(posterior_real_data['rho'] == '1')
 
 
     '''
