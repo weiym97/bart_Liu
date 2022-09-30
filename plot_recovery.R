@@ -48,8 +48,9 @@ stat_sim
 stat_recov
 
 if (outlier=='remove'){
-  stat_sim < - stat_sim[stat_recov$tau<200,]
-  stat_recov <- stat_recov[stat_recov$tau<200,]
+  index < - stat_recov$tau <=200
+  stat_sim < - stat_sim[index,]
+  stat_recov <- stat_recov[index,]
 }
 
 params=return_param(model_name)
