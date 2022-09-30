@@ -48,7 +48,7 @@ stat_sim
 stat_recov
 
 if (outlier=='remove'){
-  index < - stat_recov$tau <=200
+  index < - (stat_recov$tau <=200)
   stat_sim < - stat_sim[index,]
   stat_recov <- stat_recov[index,]
 }
