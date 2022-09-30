@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     ###############################################################################################################
     # Simulation for Liu's paper
-
+    '''
     parameter_group_result = pd.read_csv('fit_real_data/posterior_group_result.txt')
     #print(parameter_group_result)
     #print(parameter_group_result.iloc[0])
@@ -238,6 +238,44 @@ if __name__ == '__main__':
     if not os.path.exists(data_dir):
         os.mkdir(data_dir)
     model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='3')
+    '''
+    ### Group 4: We take all the participants as a single group, and try to figure out their distribution
+    '''
+    param_group_result_all = parameter_group_result = pd.read_csv('fit_real_data/posterior_group_result_all.txt')
+    psi = np.random.gamma(shape=parameter_group_result.iloc[0,1],scale=1/parameter_group_result.iloc[1,1],size=n_simu_subj)
+    xi = np.random.gamma(shape=parameter_group_result.iloc[2,1],scale=1/parameter_group_result.iloc[3,1],size=n_simu_subj)
+    rho = np.random.gamma(shape=parameter_group_result.iloc[4,1],scale=1/parameter_group_result.iloc[5,1],size=n_simu_subj)
+    Lambda = np.random.gamma(shape=parameter_group_result.iloc[6,1],scale=1/parameter_group_result.iloc[7,1],size=n_simu_subj)
+    tau = np.random.gamma(shape=parameter_group_result.iloc[8,1],scale=1/parameter_group_result.iloc[9,1],size=n_simu_subj)
+
+    #psi = np.clip(psi,0.0,0.05)
+    psi = np.clip(psi,0.0,1.0)
+    #rho = np.clip(rho,0.15,2.0)
+    rho = np.clip(rho,0.0,2.0)
+    #Lambda = np.clip(Lambda,0,18)
+    #tau = np.clip(tau,0,35)
+
+    params = pd.DataFrame({'subjID': np.arange(n_simu_subj) + 40001,
+                           'psi': psi,
+                           'xi': xi,
+                           'rho': rho,
+                           'lambda':Lambda,
+                           'tau': tau
+                           })
+
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir, n_simu_subj, n_fit_per_run,group='4')
+    '''
+
+
+    params = pd.read_csv('fit_real_data/Posterior_distribution.csv')
+    params['subjID'] = params['ID']
+    data_dir = 'data/simulation/'
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    model_simulation_main('EWBart',accu_reward, explode_prob, max_pump, params, data_dir,len(params), len(params),group='5')
 
 
 
