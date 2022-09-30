@@ -44,6 +44,9 @@ outlier <- args[3]
 stat_sim <- read.csv(paste('data/simulation/',data_name,'_statistics.csv',sep=''))
 stat_recov <- read.table(paste('fit_result/summary_',model_name,'_',data_name,'.txt',sep=''),header=T)
 
+dim(stat_sim)
+dim(stat_recov)
+
 
 if (outlier=='remove'){
   #class(stat_recov$tau<200)
