@@ -51,7 +51,8 @@ if (outlier=='remove'){
   stat_sim <- stat_sim[stat_recov$tau<500,]
   stat_recov <- stat_recov[stat_recov$tau<500,]
 }
-dim(stat_sim)
+stat_sim$tau <- log10(stat_sim$tau)
+stat_recov$tau <- log10(stat_recov$tau)
 
 params=return_param(model_name)
 for (i in 1:length(params)){
